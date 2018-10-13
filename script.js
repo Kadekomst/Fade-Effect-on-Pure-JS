@@ -3,7 +3,7 @@ class Animation {
 
   fadeIn(delay) {
     let stageCounter = 1;
-    let obj = this.el;
+    let el = this.el;
 
     let faded = setInterval(changeOpacity, Math.sqrt(delay) / 2);
 
@@ -13,17 +13,43 @@ class Animation {
       let stagesQuantity = Math.sqrt(delay) * 2;
 
       let opacityChange = starterOpacityValue / stagesQuantity * stageCounter;
-      obj.style.opacity = opacityChange;
+      el.style.opacity = opacityChange;
+
+      el.style.display = 'block';
 
       stageCounter++;
 
       if ( opacityChange >= starterOpacityValue )
       {
         clearInterval(faded);
-        obj.style.opacity = starterOpacityValue;
+        el.style.opacity = starterOpacityValue;
       }
     }
+  }
 
+  fadeOut(delay) {
+    let stageCounter = Math.sqrt(delay) * 2;
+    let el = this.el;
+
+    let faded = setInterval(changeOpacity, Math.sqrt(delay) / 2);
+
+    function changeOpacity() {
+      let starterOpacityValue = 1;
+      let endOpacityValue = 0;
+      let stagesQuantity = Math.sqrt(delay) * 2;
+
+      let opacityChange = starterOpacityValue / stagesQuantity * stageCounter;
+      el.style.opacity = opacityChange;
+
+      stageCounter--;
+
+      if ( opacityChange <= 0 ) {
+        clearInterval(faded);
+        el.style.opacity = 0;
+        el.style.display = 'none';
+      }
+
+     }
   }
 
   debugElement() {
@@ -36,6 +62,10 @@ const image = imageWrapper.querySelector('img');
 
 let anim = new Animation(image);
 
-image.addEventListener('click', function()  {
-  anim.fadeIn(5000);
+document.getElementById('image-display').addEventListener('click', function()  {
+  anim.fadeIn(500);
+})
+
+document.getElementById('image-hide').addEventListener('click', function()  {
+  anim.fadeOut(500);
 })
