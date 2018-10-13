@@ -5,7 +5,9 @@ class Animation {
     let stageCounter = 1;
     let obj = this.el;
 
-    let changeOpacity = setInterval(function() {
+    let faded = setInterval(changeOpacity, Math.sqrt(delay) / 2);
+
+    function changeOpacity() {
       let starterOpacityValue = 1;
       let endOpacityValue = 0;
       let stagesQuantity = Math.sqrt(delay) * 2;
@@ -15,9 +17,12 @@ class Animation {
 
       stageCounter++;
 
-      if ( stageCounter >= stagesQuantity ) obj.style.opacity = 1;
-
-    }, Math.sqrt(delay) / 2);
+      if ( opacityChange >= starterOpacityValue )
+      {
+        clearInterval(faded);
+        obj.style.opacity = starterOpacityValue;
+      }
+    }
 
   }
 
@@ -31,4 +36,6 @@ const image = imageWrapper.querySelector('img');
 
 let anim = new Animation(image);
 
-anim.fadeIn(3000);
+image.addEventListener('click', function()  {
+  anim.fadeIn(5000);
+})
